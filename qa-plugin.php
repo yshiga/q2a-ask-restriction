@@ -20,7 +20,7 @@
 	}
 
 	// language file
-	qa_register_plugin_phrases('qa-ask-restriction-*.php', 'qa_ask_restriction_lang');
+	qa_register_plugin_phrases('qa-ask-restriction-lang-*.php', 'qa_ask_restriction_lang');
 	// layer
 	qa_register_plugin_layer('qa-ask-restriction-layer.php', 'Ask Restriction Layer');
 
