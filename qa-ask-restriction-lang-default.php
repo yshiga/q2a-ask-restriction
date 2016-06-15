@@ -16,14 +16,14 @@
 	return array(
 		// default
 		'title' => 'Before you post a question',
-		'little_only_after' => 'あと少しで質問が投稿できます。回答者の方のために、ご協力をお願い致します。',
+		'little_only_after' => 'It\'s a little more and a question can be contributed. Please cooperate in purpose to the respondent.',
 		'input_profile_title' => 'Input Profile',
-		'input_message' => '回答者の方に気持よく、適切な質問をしていただくため、プロフィールの入力をお願いいたします。プロフィールを入力し終わると、質問ができるようになります。',
-		'input_profile' => '・自己紹介の入力',
-		'profile_content' => 'あなたがどのような人で、どんな飼育を行っているかを書きましょう。',
-		'acitvity_location' => '・活動場所',
-		'location_content' => '地域によって飼育方法や適切なアドバイスが変わってきます。活動場所は必ず記載してください。',
-		'button_catption' => 'プロフィールを入力する',
+		'input_message' => 'To make the appropriate question comfortable to the respondent, input of a profile, please. You can ask now that it finishes inputting a profile.',
+		'input_profile' => '* profile',
+		'profile_content' => 'I\'ll describe what kind of culture you\'re doing with what kind of person.',
+		'acitvity_location' => '* location',
+		'location_content' => 'Culture method and appropriate advice are changing by an area. Please be sure to mention an locatioin.',
+		'button_catption' => 'profile is input',
 	);
 
 
