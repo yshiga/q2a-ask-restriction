@@ -24,6 +24,9 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 		if(!$this->input_profile_ok) {
 			$css = "<style>
+#profile-container {
+	padding: 0 30px;
+}
 .input-profile-button {
 	background-color: #f95225;
 	color: #fff;
@@ -50,7 +53,9 @@ class qa_html_theme_layer extends qa_html_theme_base
 	public function main_part($key, $part)
 	{
 		if($key == 'form' && !$this->input_profile_ok) {
+			$this->output('<div id="profile-container">');
 			$this->output_profile_message();
+			$this->output('</div>');
 		} else {
 			qa_html_theme_base::main_part($key, $part);
 		}
@@ -58,43 +63,36 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 	private function output_profile_message()
 	{
-		$title='質問を投稿する前に';
+
+		$title=qa_lang_html('qa_ask_restriction_lang/title');
 		$this->output('<h1>',$title,'</h1>');
-		$message='あと少しで質問が投稿できます。回答者の方のために、ご協力をお願いいたします。';
-		$this->output('<p><b>',$message,'</b></p>');
+		$content=qa_lang_html('qa_ask_restriction_lang/little_only_after');
+		$this->output('<p><b>',$content,'</b></p>');
 		$this->output('<br>');
 
-		$title='プロフィールの入力';
+		$title=qa_lang_html('qa_ask_restriction_lang/input_profile_title');
 		$this->output('<h2>',$title,'</h2>');
-		$message='回答者の方に気持よく、適切な質問を投稿していただくため、';
-		$message.='プロフィールの入力をお願い致します。';
-		$message.='プロフィールを入力し終わると、質問ができるようになります。';
-		$this->output('<p>',$message,'</p>');
+		$content=qa_lang_html('qa_ask_restriction_lang/input_message');
+		$this->output('<p>',$content,'</p>');
 		$this->output('<br>');
-		$message='・自己紹介の入力';
-		$this->output('<p>',$message,'</p>');
-		$message='あなたがどのような人で、どんな飼育を行っているかを書きましょう。';
-		$this->output('<p>',$message,'</p>');
+
+		$title=qa_lang_html('qa_ask_restriction_lang/input_profile');
+		$this->output('<p>',$title,'</p>');
+		$content=qa_lang_html('qa_ask_restriction_lang/profile_content');
+		$this->output('<p>',$content,'</p>');
 		$this->output('<br>');
-		$message='・活動場所';
-		$this->output('<p>',$message,'</p>');
-		$message='地域によって飼育方法や適切なアドバイスが変わってきます。活動場所は必ず記載してください。';
-		$this->output('<p>',$message,'</p>');
+
+		$title=qa_lang_html('qa_ask_restriction_lang/acitvity_location');
+		$this->output('<p>',$title,'</p>');
+		$content=qa_lang_html('qa_ask_restriction_lang/location_content');
+		$this->output('<p>',$content,'</p>');
 		$this->output('<br>');
-		$message='プロフィールを入力する';
+
+		$content=qa_lang_html('qa_ask_restriction_lang/button_catption');
 		$this->output('<a href="',qa_path('account'),'">');
-		$this->output('<button class="input-profile-button">',$message,'</button>');
+		$this->output('<button class="input-profile-button">',$content,'</button>');
 		$this->output('</a>');
+
 	}
-	
-	private function insert_into_links($message, $link)
-	{
-		return strtr(
-			$message,
-			array(
-				'^1' => '<a href="'.qa_html($link).'">',
-				'^2' => '</a>',
-			)
-		);
-	}
+
 }
