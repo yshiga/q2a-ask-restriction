@@ -24,6 +24,10 @@
 		'acitvity_location' => '* location',
 		'location_content' => 'Culture method and appropriate advice are changing by an area. Please be sure to mention an locatioin.',
 		'button_catption' => 'profile is input',
+		'comment_title' => 'Please reply a comment',
+		'comment_content' => 'Before contributing a question newly, please return a comment to everything of the answer contributed to the previous question. Respondent\'s person is waiting for an answer from you.',
+		'best_answer_title' => 'Please choose the best answer.',
+		'best_answer_content' => 'More than 2 answers are sending the next question, but the best answer isn\'t chosen yet. Please also choose the best answer for fee to the respondent.',
 	);
 
 
