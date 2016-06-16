@@ -1,6 +1,6 @@
 <?php
 
-require_once QA_PLUGIN_DIR.'q2a-ask-restriction/ask_restriction.php';
+require_once QA_PLUGIN_DIR.'q2a-ask-restriction/ask-restriction.php';
 
 class qa_html_theme_layer extends qa_html_theme_base
 {
