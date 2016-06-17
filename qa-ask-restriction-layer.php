@@ -148,7 +148,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 		$this->output('<br>');
 		$this->output('<ul class="question_list">');
 		foreach($this->no_comment_answer_question as $question) {
-			$url = qa_opt('sit_url')."/".$question["question_id"];
+			$url = qa_opt('sit_url')."/".$question["question_id"]."#".$question["answer_id"];
 			$link='<a href="'.$url.'">'.$question["question"]."</a>";
 			$this->output('<li>',$link,'</li>');
 		}
