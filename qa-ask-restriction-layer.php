@@ -114,6 +114,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 		$this->output('<a href="', qa_path('account'), '">');
 		$this->output('<button class="input-profile-button">', $content, '</button>');
 		$this->output('</a>');
+		$this->output('<br><br>');
 	}
 
 	private function output_no_best_answer_questions()
@@ -133,7 +134,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 			$this->output('<li>', $link, '</li>');
 		}
 		$this->output('</ul>');
-		$this->output('<br>');
+		$this->output('<br><br>');
 	}
 
 	private function output_no_comment_answer_questions()
