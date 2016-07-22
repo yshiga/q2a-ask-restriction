@@ -28,6 +28,8 @@
 		'comment_content' => 'Before contributing a question newly, please return a comment to everything of the answer contributed to the previous question. Respondent\'s person is waiting for an answer from you.',
 		'best_answer_title' => 'Please choose the best answer.',
 		'best_answer_content' => 'More than 2 answers are sending the next question, but the best answer isn\'t chosen yet. Please also choose the best answer for fee to the respondent.',
+		'reference_date' => 'The day of the judgement',
+		'days' => 'days',
 	);
 
 
