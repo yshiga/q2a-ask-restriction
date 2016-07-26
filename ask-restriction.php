@@ -34,7 +34,7 @@ class ask_restriction
 		return $location && $about;
 	}
 
-	public static function get_no_best_answer_question($userid=null, $mincount=2)
+	public static function get_no_best_answer_question($userid=null, $mincount=2, $days=7)
 	{
 		if (empty($userid)) {
 			return;
@@ -43,21 +43,21 @@ class ask_restriction
 		 COUNT(t1.postid) AS answer_num
 		 FROM qa_posts t1
 		 JOIN qa_posts t2
-		 ON t1.postid = t2.parentid ";
-		$sql .= qa_db_apply_sub(" WHERE t1.userid = #", array((int)$userid));
-		$sql .= " AND t1.type = 'Q'
+		 ON t1.postid = t2.parentid
+		 WHERE t1.userid = #
+		 AND t1.type = 'Q'
 		 AND t1.selchildid IS NULL
-		 AND t2.type='A'
-		 GROUP BY t1.postid";
-		$sql .= qa_db_apply_sub(" HAVING answer_num >= #", array((int)$mincount));
-		// echo $sql.PHP_EOL;
-		$result = qa_db_query_sub($sql);
+		 AND t1.created > DATE_SUB(NOW(), INTERVAL # DAY)
+		 AND t2.type = 'A'
+		 GROUP BY t1.postid
+		 HAVING answer_num >= #";
+		$result = qa_db_query_sub($sql, $userid, $days, $mincount);
 		return qa_db_read_all_assoc($result);
 	}
 
-	public static function get_no_comment_answer_question($userid=null, $month=null)
+	public static function get_no_comment_answer_question($userid=null, $days=365)
 	{
-		$sql = 'SELECT t1.userid AS questioner_id,
+		$sql = "SELECT t1.userid AS questioner_id,
 		 t1.title AS question,
 		 t2.parentid AS question_id,
 		 t2.content AS answer,
@@ -66,22 +66,17 @@ class ask_restriction
 		 FROM qa_posts t2
 		 LEFT JOIN qa_posts t3 ON t2.postid = t3.parentid
 		 JOIN qa_posts t1 ON t2.parentid = t1.postid
-		 WHERE t1.type="Q"
-		 AND t2.type="A"';
+		 WHERE t1.type = 'Q'
+		 AND t2.type = 'A'";
+		// $sql .= " AND t2.created > DATE_SUB(NOW(), INTERVAL # MONTH)";
+		$sql .= " AND t2.created > DATE_SUB(NOW(), INTERVAL # DAY)";
 
-		if (isset($month)) {
-			$sql .= qa_db_apply_sub(" AND t2.created > DATE_SUB(NOW(), INTERVAL # MONTH)", array((int)$month));
-		}
+		$sql .= " GROUP BY t2.postid
+		 HAVING c_count = 0
+		 AND questioner_id = #
+		 ORDER BY questioner_id";
 
-		$sql .= ' GROUP BY t2.postid
-		 HAVING c_count = 0';
-
-		if(isset($userid)) {
-			$sql .= qa_db_apply_sub(' AND questioner_id = #', array((int)$userid));
-		}
-		$sql .= ' ORDER BY questioner_id';
-
-		$result = qa_db_query_sub($sql);
+		$result = qa_db_query_sub($sql, (int)$days, (int)$userid);
 		return qa_db_read_all_assoc($result);
 	}
 }

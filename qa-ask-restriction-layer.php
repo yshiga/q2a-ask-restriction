@@ -4,6 +4,7 @@ require_once QA_PLUGIN_DIR.'q2a-ask-restriction/ask-restriction.php';
 
 class qa_html_theme_layer extends qa_html_theme_base
 {
+	const ANSWER_MIN_COUNT = 2;
 	public $input_profile_ok;
 	public $no_best_answer_question;
 	public $no_comment_answer_question;
@@ -11,10 +12,11 @@ class qa_html_theme_layer extends qa_html_theme_base
 	public function __construct($template, $content, $rooturl, $request)
 	{
 		if (qa_is_logged_in() && $template == 'ask') {
+			$days = qa_opt('qa_ask_restriction_date') ? (int)qa_opt('qa_ask_restriction_date') : 7;
 			$userid = qa_get_logged_in_userid();
 			$this->input_profile_ok = ask_restriction::input_profile_ok($userid);
-			$this->no_best_answer_question = ask_restriction::get_no_best_answer_question($userid, 2);
-			$this->no_comment_answer_question = ask_restriction::get_no_comment_answer_question($userid, 12);
+			$this->no_best_answer_question = ask_restriction::get_no_best_answer_question($userid, self::ANSWER_MIN_COUNT, $days);
+			$this->no_comment_answer_question = ask_restriction::get_no_comment_answer_question($userid, $days);
 		} else {
 			$this->input_profile_ok = true;
 			$this->no_best_answer_question = array();
@@ -65,7 +67,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 	public function main_part($key, $part)
 	{
-		if ($key == 'form' && (
+		if ($key === 'form' && (
 		!$this->input_profile_ok
 		|| count($this->no_best_answer_question) > 0
 		|| count($this->no_comment_answer_question) > 0 )) {
@@ -79,6 +81,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 			qa_html_theme_base::main_part($key, $part);
 		}
 	}
+
 	private function output_message_header()
 	{
 		$title = qa_lang_html('qa_ask_restriction_lang/title');
@@ -87,6 +90,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 		$this->output('<p><b>', $content, '</b></p>');
 		$this->output('<br>');
 	}
+
 	private function output_profile_message()
 	{
 		if ($this->input_profile_ok) {
