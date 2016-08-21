@@ -34,27 +34,6 @@ class ask_restriction
 		return $location && $about;
 	}
 
-	public static function get_no_best_answer_question($userid=null, $mincount=2, $days=7)
-	{
-		if (empty($userid)) {
-			return;
-		}
-		$sql = "SELECT t1.postid AS qid, t1.title,
-		 COUNT(t1.postid) AS answer_num
-		 FROM qa_posts t1
-		 JOIN qa_posts t2
-		 ON t1.postid = t2.parentid
-		 WHERE t1.userid = #
-		 AND t1.type = 'Q'
-		 AND t1.selchildid IS NULL
-		 AND t1.created > DATE_SUB(NOW(), INTERVAL # DAY)
-		 AND t2.type = 'A'
-		 GROUP BY t1.postid
-		 HAVING answer_num >= #";
-		$result = qa_db_query_sub($sql, $userid, $days, $mincount);
-		return qa_db_read_all_assoc($result);
-	}
-
 	public static function get_no_comment_answer_question($userid=null, $days=365)
 	{
 		$sql = "SELECT t1.userid AS questioner_id,

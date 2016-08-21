@@ -6,7 +6,6 @@ class qa_html_theme_layer extends qa_html_theme_base
 {
 	const ANSWER_MIN_COUNT = 2;
 	public $input_profile_ok;
-	public $no_best_answer_question;
 	public $no_comment_answer_question;
 
 	public function __construct($template, $content, $rooturl, $request)
@@ -15,11 +14,9 @@ class qa_html_theme_layer extends qa_html_theme_base
 			$days = qa_opt('qa_ask_restriction_date') ? (int)qa_opt('qa_ask_restriction_date') : 7;
 			$userid = qa_get_logged_in_userid();
 			$this->input_profile_ok = ask_restriction::input_profile_ok($userid);
-			$this->no_best_answer_question = ask_restriction::get_no_best_answer_question($userid, self::ANSWER_MIN_COUNT, $days);
 			$this->no_comment_answer_question = ask_restriction::get_no_comment_answer_question($userid, $days);
 		} else {
 			$this->input_profile_ok = true;
-			$this->no_best_answer_question = array();
 			$this->no_comment_answer_question = array();
 		}
 
@@ -31,7 +28,6 @@ class qa_html_theme_layer extends qa_html_theme_base
 		qa_html_theme_base::head_css();
 
 		if (!$this->input_profile_ok
-		|| count($this->no_best_answer_question) > 0
 		|| count($this->no_comment_answer_question) > 0) {
 			$css = "<style>
 #profile-container {
@@ -58,7 +54,6 @@ class qa_html_theme_layer extends qa_html_theme_base
 	public function page_title_error()
 	{
 		if (!$this->input_profile_ok
-		|| count($this->no_best_answer_question) > 0
 		|| count($this->no_comment_answer_question) > 0) {
 			$this->content['title'] = '';
 		}
@@ -69,7 +64,6 @@ class qa_html_theme_layer extends qa_html_theme_base
 	{
 		if ($key === 'form' && (
 		!$this->input_profile_ok
-		|| count($this->no_best_answer_question) > 0
 		|| count($this->no_comment_answer_question) > 0 )) {
 			$this->output('<div id="profile-container">');
 			$this->output_message_header();
@@ -118,26 +112,6 @@ class qa_html_theme_layer extends qa_html_theme_base
 		$this->output('<a href="', qa_path('account'), '">');
 		$this->output('<button class="input-profile-button">', $content, '</button>');
 		$this->output('</a>');
-		$this->output('<br><br>');
-	}
-
-	private function output_no_best_answer_questions()
-	{
-		if (count($this->no_best_answer_question) <= 0) {
-			return;
-		}
-		$title = qa_lang_html('qa_ask_restriction_lang/best_answer_title');
-		$this->output('<h2>', $title, '</h2>');
-		$content = qa_lang_html('qa_ask_restriction_lang/best_answer_content');
-		$this->output('<p>', $content, '</p>');
-		$this->output('<br>');
-		$this->output('<ul class="question_list">');
-		foreach ($this->no_best_answer_question as $question) {
-			$url = qa_opt('sit_url') . "/" . $question["qid"];
-			$link = '<a href="' . $url . '">'.$question["title"] . "</a>";
-			$this->output('<li>', $link, '</li>');
-		}
-		$this->output('</ul>');
 		$this->output('<br><br>');
 	}
 
